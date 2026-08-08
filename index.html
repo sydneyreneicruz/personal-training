@@ -20,7 +20,22 @@
     <body>
         <gradio-lite>
             <gradio-file name="app.py" entrypoint>
+import sys
+
+# Step 1: Intercept the Pyodide/browser environment boot loop
+if "pyodide" in sys.modules:
+    import micropip
+    
+    # Step 2: Force install a verified, pure-python browser-safe version
+    await micropip.install('huggingface-hub==0.23.4', reinstall=True)
+    
+    # Step 3: Put any other requirements you deleted from requirements.txt here
+    # Example: await micropip.install('pandas')
+
+# Step 4: Now launch Gradio safely
 import gradio as gr
+
+# Your application code continues below...
 
 from filters import as_gray
 
