@@ -20,38 +20,14 @@
     <body>
         <gradio-lite>
             <gradio-file name="app.py" entrypoint>
-import gradio as gr
-
-from filters import as_gray
-
-def process(input_image):
-    output_image = as_gray(input_image)
-    return output_image
-
-demo = gr.Interface(
-    process,
-    "image",
-    "image",
-    examples=["lion.jpg", "logo.png"],
-)
-
-demo.launch()
+            import micropip
+            
+            # Force-install a stable, Pyodide-compatible version first
+            await micropip.install('huggingface-hub==0.23.4')
+            
+            import gradio as gr
+            # Your application code goes here
             </gradio-file>
-
-            <gradio-file name="filters.py">
-from skimage.color import rgb2gray
-
-def as_gray(image):
-    return rgb2gray(image)
-            </gradio-file>
-
-            <gradio-file name="lion.jpg" url="https://raw.githubusercontent.com/gradio-app/gradio/main/gradio/test_data/lion.jpg" />
-            <gradio-file name="logo.png" url="https://raw.githubusercontent.com/gradio-app/gradio/main/guides/assets/logo.png" />
-
-            <gradio-requirements>
-# Same syntax as requirements.txt
-scikit-image
-            </gradio-requirements>
         </gradio-lite>
     </body>
 </html>
