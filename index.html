@@ -1,72 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Gradio-Lite: Serverless Gradio Running Entirely in Your Browser</title>
-        <meta name="description" content="Gradio-Lite: Serverless Gradio Running Entirely in Your Browser">
-
-        <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.css" />
-
-        <style>
-            html, body {
-                margin: 0;
-                padding: 0;
-                height: 100%;
-            }
-        </style>
-    </head>
-    <body>
-        <gradio-lite>
-            <gradio-file name="app.py" entrypoint>
-import sys
-
-# Step 1: Intercept the Pyodide/browser environment boot loop
-if "pyodide" in sys.modules:
-    import micropip
-    
-    # Step 2: Force install a verified, pure-python browser-safe version
-    await micropip.install('huggingface-hub==0.23.4', reinstall=True)
-    
-    # Step 3: Put any other requirements you deleted from requirements.txt here
-    # Example: await micropip.install('pandas')
-
-# Step 4: Now launch Gradio safely
-import gradio as gr
-
-# Your application code continues below...
-
-from filters import as_gray
-
-def process(input_image):
-    output_image = as_gray(input_image)
-    return output_image
-
-demo = gr.Interface(
-    process,
-    "image",
-    "image",
-    examples=["lion.jpg", "logo.png"],
-)
-
-demo.launch()
-            </gradio-file>
-
-            <gradio-file name="filters.py">
-from skimage.color import rgb2gray
-
-def as_gray(image):
-    return rgb2gray(image)
-            </gradio-file>
-
-            <gradio-file name="lion.jpg" url="https://raw.githubusercontent.com/gradio-app/gradio/main/gradio/test_data/lion.jpg" />
-            <gradio-file name="logo.png" url="https://raw.githubusercontent.com/gradio-app/gradio/main/guides/assets/logo.png" />
-
-            <gradio-requirements>
-# Same syntax as requirements.txt
-scikit-image
-            </gradio-requirements>
-        </gradio-lite>
-    </body>
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Governance DSL Form Builder</title>
+    <script type="module" crossorigin src="https://gradio-lite-previews.s3.amazonaws.com/PINNED_HF_HUB/dist/lite.js"></script>
+    <link rel="stylesheet" href="https://gradio-lite-previews.s3.amazonaws.com/PINNED_HF_HUB/dist/lite.css" />
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        gradio-lite {
+            flex: 1;
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <gradio-lite>
+        <gradio-file name="app.py" entrypoint>
+            import gradio as gr
+            def greet(name):
+                return "Hello " + name + "!"
+            demo = gr.Interface(fn=greet, inputs="textbox", outputs="textbox")
+            demo.launch()
+        </gradio-file>
+    </gradio-lite>
+</body>
 </html>
